@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
@@ -11,6 +12,7 @@ import (
 	"net/http"
 	_ "net/http/pprof"
 	"os"
+	"os/user"
 	"runtime"
 	"sync"
 	"sync/atomic"
@@ -82,7 +84,12 @@ func main() {
 	// config or AWS_REGION environment variable.
 	/*	logLevel := aws.LogLevel(aws.LogDebugWithHTTPBody)
 		LogLevel: logLevel,*/
-	awsCfg := &aws.Config{HTTPClient: httpClient}
+	usr, err := user.Current()
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(usr.HomeDir)
+	awsCfg := &aws.Config{HTTPClient: httpClient, Credentials: credentials.NewSharedCredentials(usr.HomeDir+"/.aws/credentials", "default")}
 	if len(cfg.Region) > 0 {
 		awsCfg.WithRegion(cfg.Region)
 	}
