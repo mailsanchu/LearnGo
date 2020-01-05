@@ -1,0 +1,15 @@
+server:
+  port: 8080
+
+database:
+  dbname:
+  dbuser: "dbuser"
+  dbpassword: "dbpassword"
+
+EXAMPLE_VAR: "variable from config.yml"
+DME2_GRM_SERVER_PORT: "path from config.yml"
+
+auth:
+  username: XXXXXXX
+  password: XXXXXXX
+hostname: Sanchu.com
