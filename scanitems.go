@@ -121,7 +121,7 @@ func main() {
 			break
 		}
 		printLogs(&producedMessages, &consumedMessages)
-		time.Sleep(30 * time.Second)
+		time.Sleep(5 * time.Second)
 	}
 	printLogs(&producedMessages, &consumedMessages)
 	//ticker.Stop()
