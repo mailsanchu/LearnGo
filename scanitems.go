@@ -26,6 +26,8 @@ func exitWithError(err error) {
 
 const tableName = "dev_gracenote_program"
 
+var ops int32
+
 /*type HTTPClientSettings struct {
 	Connect          time.Duration
 	ConnKeepAlive    time.Duration
@@ -147,11 +149,12 @@ func printPeriodically(done chan bool, ticker *time.Ticker, producerCount *uint6
 }
 
 func printLogs(producerCount *uint64, consumerCount *uint64) {
-	format := "%07d"
+	format, aFormat := "%07d", "%04d"
 	var stats runtime.MemStats
 	runtime.ReadMemStats(&stats)
-	exitReport := fmt.Sprintf("%s | %s | goroutinesCount = %d | memAllocBytes = %s | "+"heapAllocBytes = %s | heapObjects = %d | stacksInUse = %d  |",
-		fmt.Sprintf(format, *producerCount), fmt.Sprintf(format, *consumerCount), runtime.NumGoroutine(), ByteCountDecimal(stats.Alloc), ByteCountDecimal(stats.HeapAlloc), stats.HeapObjects, stats.StackInuse)
+	exitReport := fmt.Sprintf("%s | %s | %s | goroutinesCount = %d | memAllocBytes = %s | "+"heapAllocBytes = %s | heapObjects = %d | stacksInUse = %d  |",
+		fmt.Sprintf(aFormat, atomic.AddInt32(&ops, 1)), fmt.Sprintf(format, *producerCount), fmt.Sprintf(format, *consumerCount), runtime.NumGoroutine(),
+		ByteCountDecimal(stats.Alloc), ByteCountDecimal(stats.HeapAlloc), stats.HeapObjects, stats.StackInuse)
 	log.Println(exitReport)
 }
 
