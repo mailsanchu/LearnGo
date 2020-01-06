@@ -129,7 +129,7 @@ func main() {
 	fmt.Println(producedMessages)
 	log.Printf("Processing took %s\n", elapsed)
 	done <- true
-	_, _ = fmt.Scanln()
+	runtime.GC()
 	printLogs(&producedMessages, &consumedMessages)
 }
 
